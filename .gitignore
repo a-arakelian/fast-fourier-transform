@@ -58,3 +58,6 @@ dkms.conf
 .main
 main
 main.cpp
+
+#dir
+parallel_fft/
