@@ -25,7 +25,3 @@ The fast Fourier transform algorithm is based on the Cooley-Tukey algorithm, whi
 ### Future Improvements
 
 In the future, I plan to parallelize the algorithm and add a detailed description of its implementation.
-<<<<<<< HEAD
-
-=======
->>>>>>> c2555e98dd5c73262cbe4fd368bf9b25e000a76e
