@@ -53,3 +53,8 @@ dkms.conf
 
 #vs code
 .vscode/
+
+#main
+.main
+main
+main.cpp
