@@ -2,9 +2,12 @@
 typedef Complex complex;
 
 class DFT {
-    
     private:
 
+    /*
+    Input (int x) must be an value that represents a power of 2,
+    binarylog returns the exponent of that power of 2.
+    */
     static int binarylog(int x) {
         int n = 0;
         while(x != 1){
@@ -14,15 +17,24 @@ class DFT {
         return n;
     }
 
+    /*
+    binarypow takes an integer input value x,
+    and returns the result of raising 2 to the power of x.
+    */
     static int binarypow(const int& x) {
         int a = 1;
         return a <<=x;
     }
 
+    /*
+    binaryswap takes two integer input values: x and l
+    binaryswap then returns an integer value
+    that is obtained by taking the
+    binary representation of n,
+    and reversing the order of the last l-1 bits
+    of that binary representation.
+    */
     static int binaryswap(const int& x, int l){
-        /*
-        000001101 -> 000010110 (l = 4)
-        */
        --l;
         int swaped = 0;
         for(int k = l; k >= 0; --k) {
@@ -32,6 +44,15 @@ class DFT {
         }
         return swaped;
     }
+
+    /*
+    permutate takes a pointer to a massive of complex numbers
+    and the size of the massive as inputs.
+    permutate perform a permutation on the input massive
+    based on the following principle:
+    for each index i in the massive, the value at index i is
+    replaced with the value at index binaryswap(i, size).
+    */
     static void permutate(complex *p, const int& size) {
         complex A[size];
         int l = binarylog(size);
@@ -44,6 +65,19 @@ class DFT {
         }
     }
 
+    /*
+    compute_dft takes a pointer to a massive of complex numbers
+    that has already been permuted, the size of the massive,
+    and a boolean value "forward" as input parameters.
+    The function compute_dft is a modified implementation of the Cooley-Tukey algorithm
+    for calculating the Discrete Fourier Transform (DFT)
+    of a given massive of complex numbers.
+    Unlike the traditional recursive implementation,
+    this function works iteratively by using a binary tree structure
+    that represents the division of the input massive into smaller submassives.
+    The depth of the current calculation is controlled by the "cascade" parameter,
+    which determines which level of the binary tree is being processed. 
+    */
     static void compute_dft(complex *p, const int& size, bool forward = true) {
         // Imaginary unity & +/- pi
         const complex i(0., 1.);
@@ -64,7 +98,14 @@ class DFT {
                 }
             }
         }
+        if(!forward) scale(p, size);
     }
+
+    /*
+    scale takes a pointer to a massive of complex numbers and its size as inputs.
+    The function is rescaleing the elements of the input massive
+    by dividing each element by the size of the massive.
+    */
     static void scale(complex *p, const int& size) {
         for(int n = 0; n < size; ++n) {
             p[n] /= static_cast<double>(size);
@@ -81,7 +122,6 @@ class DFT {
         if((size == 0) || ((size & (size - 1)) != 0)) { return false; }
         permutate(p, size);
         compute_dft(p, size, false);
-        scale(p, size);
         return true;
     }
 };
